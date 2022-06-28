@@ -1,0 +1,478 @@
+java api
+
+
+--------
+package com.example.check1;
+import com.google.gson.*;
+import org.json.JSONObject;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.text.Editable;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+public class MainActivity extends AppCompatActivity {
+Button bt;
+EditText et;
+String ans;
+TextView tt;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        tt=(TextView)findViewById(R.id.tt);
+        bt=(Button) findViewById(R.id.button);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                et=(EditText)findViewById(R.id.editTextTextPersonName);
+                 ans=et.getText().toString();
+                try {
+                    apicall(ans);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            private void apicall(String ans) throws IOException {
+                OkHttpClient client = new OkHttpClient();
+String url="https://unofficial-cricbuzz.p.rapidapi.com/teams/get-schedules?teamId="+ans;
+                Request request = new Request.Builder()
+                        .url(url)
+                        .get()
+                        .addHeader("X-RapidAPI-Key", "af49a1e554msh7e2d7553bad5146p149893jsna3d1e219b1dd")
+                        .addHeader("X-RapidAPI-Host", "unofficial-cricbuzz.p.rapidapi.com")
+                        .build();
+                client.newCall(request).enqueue(new Callback() {
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Toast.makeText(getBaseContext(), "failure",Toast.LENGTH_LONG).show();
+                    }
+
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+if(response.isSuccessful()){
+    String resp= response.body().string();
+    MainActivity.this.runOnUiThread(new Runnable() {
+        @Override
+        public void run() {
+            //   Toast.makeText(getBaseContext(), "success",Toast.LENGTH_LONG).show();
+//tt.setText("ur there");
+
+//
+
+            //
+
+//                JSONObject jsonObject=new JSONObject(resp);
+//                System.out.println(jsonObject);
+//                //we need to get the loc
+//                String val1= jsonObject.getString("adWrapper");
+//                tt.setText(val1);
+//            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//            JsonElement je = JsonParser.parseString(resp);
+//            String prettyJsonString = gson.toJson(je);
+//            System.out.println(prettyJsonString);
+
+            JSONObject json = null; // Convert text to object
+            try {
+                json = new JSONObject(resp);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            try{
+                Toast.makeText(getBaseContext(), "success",Toast.LENGTH_LONG).show();
+                System.out.println(json.toString(4));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+    });
+}
+                    }
+                });
+
+           //    Response response = client.newCall(request).execute();
+
+
+            }
+        });
+
+    }
+}
+
+
+
+xml api----just enter a number
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        android:id="@+id/tt"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="63dp"
+        tools:layout_editor_absoluteY="195dp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="198dp"
+        tools:layout_editor_absoluteY="443dp"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+main file1---
+java----
+package com.example.my;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.util.Timer;
+
+public class MainActivity extends AppCompatActivity {
+    Button btn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        // btn = (Button) findViewById(R.id.button);
+        // btn.setOnClickListener(this);
+
+        btn = (Button) findViewById(R.id.b1);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent i = new Intent(MainActivity.this, MainActivitypage2.class);
+                startActivity(i);
+                Toast.makeText(getBaseContext(), "enter correct name.", Toast.LENGTH_LONG).show();
+            }
+        });
+
+    }
+}
+
+
+mainfile2---java
+package com.example.my;
+
+
+
+import androidx.appcompat.app.AppCompatActivity;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity3 extends AppCompatActivity implements View.OnClickListener {
+    Button btnOne, btnClear;
+    EditText txtResult;
+            TextView dis;
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        dis = (TextView) findViewById(R.id.t3);
+
+
+        btnClear = (Button) findViewById(R.id.butclr);
+        btnClear.setOnClickListener(this);
+        btnOne = (Button) findViewById(R.id.butsrc);
+        btnOne.setOnClickListener(this);
+}
+@Override
+public void onClick(View v) {
+        //Intent it=new Intent(MainActivity.this,MainActivity2.class);
+       // startActivity(it);
+
+        dis.setText(" ");
+
+        Spinner spinner = (Spinner) findViewById(R.id.spinner2);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MainActivity3.this, android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.Mode));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        //spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
+        String data = spinner.getSelectedItem().toString();
+        Toast.makeText(getApplicationContext(), data, Toast.LENGTH_LONG).show();
+
+
+        if (data.contains("virat")) {
+        // String[] operands = data.split("/");
+        if (data.contains("virat")) {
+        String result = "Span-2008-2022\nMatches-260\nRuns-12311\nHS_183\nAverage-58.07";
+
+        dis.setText(result);
+
+        } else {
+
+        Toast.makeText(getBaseContext(), "enter correct name.", Toast.LENGTH_LONG).show();
+
+        }
+        } else if (data.contains("klrahul")) {
+        // String[] operands = data.split("/");
+        if (data.contains("klrahul")) {
+        String result = "Span-2016-2022\nMatches-42\nRuns-1634\nHS-112\nAverage-46.89";
+
+        dis.setText(result);
+
+        } else {
+
+        Toast.makeText(getBaseContext(), "enter correct name.", Toast.LENGTH_LONG).show();
+
+        }
+        } else if (data.contains("rohit")) {
+        // String[] operands = data.split("/");
+        if (data.contains("rohit")) {
+        String result = "Span-2007-2022\nMatches-230\nRuns-9283\nHS-264\nAverage-48.6";
+
+        dis.setText(result);
+
+        } else {
+
+        Toast.makeText(getBaseContext(), "enter correct name.", Toast.LENGTH_LONG).show();
+
+        }
+        }
+        else if (data.contains("shreyas")) {
+            // String[] operands = data.split("/");
+            if (data.contains("shreyas")) {
+                String result = "Span-2017-2022\nMatches-26\nRuns-947\nHS-103\nAverage-41.7";
+
+                dis.setText(result);
+
+            } else {
+
+                Toast.makeText(getBaseContext(), "enter correct name.", Toast.LENGTH_LONG).show();
+
+            }
+        }else {
+
+        Toast.makeText(getBaseContext(), "enter correct name", Toast.LENGTH_LONG).show();
+
+        }
+
+
+
+
+
+
+
+        }
+        }
+
+
+
+
+
+-----
+mainfile1 xml
+=---
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    android:background="#7C7CBF87"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="1500dp">
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-120dp"
+            android:src="@drawable/ind" />
+
+
+        <Button
+            android:id="@+id/b1"
+            android:layout_width="180dp"
+            android:layout_height="110dp"
+            android:layout_marginLeft="130dp"
+            android:layout_marginTop="500dp"
+            android:backgroundTint="#472323"
+            android:text="cricscores"
+            android:textStyle="italic" />
+
+
+
+</RelativeLayout>
+</RelativeLayout>
+
+
+-----mainfile2 xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/finallogo"
+
+    android:layout_height="match_parent"
+    tools:context=".MainActivity3">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/t2"
+        android:text="PLAYER STATISTICS"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginLeft="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="50dp"
+        android:textStyle="bold"
+        android:textSize="30dp"/>
+
+    <TextView
+        android:id="@+id/t1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="Enter Player's Name:"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="@id/t2"
+        app:layout_constraintStart_toStartOf="@id/t2"
+
+        app:layout_constraintTop_toTopOf="@id/t2"
+        app:layout_constraintVertical_bias="0.547" />
+
+
+
+    <TextView
+        android:id="@+id/t3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="450dp"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/t2"
+        app:layout_constraintStart_toStartOf="@id/t2"
+
+        app:layout_constraintTop_toTopOf="@id/t2"
+        app:layout_constraintVertical_bias="0.547" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SEARCH"
+        android:textStyle="italic"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/t2"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="90dp"
+        android:id="@+id/butsrc"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CLEAR"
+        android:textStyle="italic"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/t2"
+        android:layout_marginLeft="220dp"
+        android:layout_marginTop="90dp"
+        android:id="@+id/butclr"/>
+
+
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="292dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:entries="@array/Mode"
+        app:layout_constraintVertical_bias="0.165" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+add this part in strings.xml----mainfile
+
+    <string-array name="Mode">
+        <item>virat</item>
+        <item>klrahul</item>
+        <item>rohit</item>
+        <item>shreyas</item>
+    </string-array>
